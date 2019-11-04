@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Http\Requests\ArticlesRequest;
 
 class ArticlesController extends Controller
 {
@@ -34,7 +35,8 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        return __METHOD__ . '은(는) Article 컬렉션을 만들기 위한 폼을 담은 뷰를 반환합니다.';
+        // return __METHOD__ . '은(는) Article 컬렉션을 만들기 위한 폼을 담은 뷰를 반환합니다.';
+        return view('articles.create');
     }
 
     /**
@@ -43,9 +45,54 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    // public function store(Request $request)
+    // {
+    //     // return __METHOD__ . '은(는) 사용자의 입력한 폼 데이터로 새로은 Article 컬렉션을 만듭니다.';
+
+    //     $rules = [
+    //         // 유효성 체크 필드 설정 룰 저장
+    //         'title' => ['required'],    // '필드' => ['검사 조건']
+    //         'content' => ['required', 'min:10'],
+    //     ];
+
+    //     $messages = [
+    //         'title.required' => '제목은 필수 입력 항목입니다.',
+    //         'content.required' => '본문은 필수 입력 항목입니다.',
+    //         // :min -> placeholder
+    //         'content.min' => '본문은 최소 :min 글자 이상이 필요합니다.',
+    //     ];
+
+    //     // $validator = \Validator::make($request->all(), $rules);
+    //     // $validator = \Validator::make($request->all(), $rules, $messages);
+
+    //     $this->validate($request, $rules, $messages);
+
+    //     // if($validator->fails()) {
+    //     //     return back()->withErrors($validator)->withInput();
+    //     // }
+
+    //     $article = \App\User::find(1)->articles()->create(
+    //         $request->all()
+    //     );
+
+    //     if(! $article) {
+    //         return back()->with('flash_message', '글 작성 실패')->withInput();
+    //     }
+
+    //     return redirect(route('articles.index'))->with('flash_message', '글 작성 성공');
+    // }
+
+    public function store(\App\Http\Requests\ArticlesRequest $request)
     {
-        return __METHOD__ . '은(는) 사용자의 입력한 폼 데이터로 새로은 Article 컬렉션을 만듭니다.';
+        $article = \App\User::find(1)->articles()->create($request->all());
+
+        //$article는 auth()->user()->articles()->create()를 호출함
+        //==> 로그인한 유저의 게시판을 작성
+        if (!$article) {
+            return back()->wtih('flash_message', '글 작성 실패')->wtihInput();
+        }
+
+        return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
     }
 
     /**
