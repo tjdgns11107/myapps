@@ -100,4 +100,45 @@ Route::get('/', 'WelcomeController@index');
 
 Route::resource('articles', 'ArticlesController');
 
+Route::get('auth/login',function() {
+    $credentials = [    // 로그인 기능 : 입력 구현 하는 것을 권장
+        'email' => 'changyj@yju.ac.kr',
+        'password' => 'password'
+    ];
+    // Auth 파서드와 같은 기능
+    if(!auth()->attempt($credentials)) {
+        // attempt : 시도하다.
+        // 즉, $credentials의 값을 통해서 로그인을 시도하는 과정
+        // return이 true인 경우 : 로그인 성공 / false인 경우 : 어떠한 이유로 인해 로그인 실패
+        return '로그인 실패 함';
+    }
+    //로그인 성공 시
+    return redirect('protected');
+});
 
+Route::get(
+    'protected',
+    ['middleware'=>'auth',  //auth 미들웨어 실행 후 클로저(function())가 실행 됨
+        function() {
+            dump(session()->all());
+            // session() 객체의 모든 것(all)을 들고 와서 화면에 나타내라(dump) -> 화면 덤프 파일
+                // 미들웨어 사용으로 인한 if문 삭제
+                // if(!auth()->check()) {
+                // auth()->check() : 로그인 상태인지 확인
+                // return이 true인 경우 : 로그인 상태 / false인 경우 : 로그아웃인 상태
+                // return '로그인 하십시오';
+            // }
+            return '환영, welcome, いらっしゃいませ!' . auth()->user()->name;
+            // auth()->user()->name : 로그인 한 유저 객체(auth()->user())의 이름(name) 필드를 가지고 옴
+        }
+    ]
+);
+
+Route::get('auth/logout', function() {
+    auth()->logout();
+    return '또 봅시다!';
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
