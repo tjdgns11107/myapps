@@ -36,4 +36,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function articles() {
+        return $this->hasMany(Article::class);
+        // 나(User)는 많은 Article을 갖는다
+        // 즉, 일(user) 대 다(articles)
+    }
+
 }
