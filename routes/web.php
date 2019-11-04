@@ -11,14 +11,14 @@
 |
 */
 
-Route::get(
-    '/',                // url 요청 경로(url), GET
-    function () {       // 요청처리 함수, 콜백, 클로저
-        return view('welcome'); // View() : 뷰 객체를 만들어 응답
-        // 인자 : 뷰 파일 지정
-        //        resources/views/뷰파일명.blade.php
-    }
-);
+// Route::get(
+//     '/',                // url 요청 경로(url), GET
+//     function () {       // 요청처리 함수, 콜백, 클로저
+//         return view('welcome'); // View() : 뷰 객체를 만들어 응답
+//         // 인자 : 뷰 파일 지정
+//         //        resources/views/뷰파일명.blade.php
+//     }
+// );
 
 // Route::get(
 //     '/{Foo?}',          // URL 파라미터 처리
@@ -77,21 +77,27 @@ Route::get(
 //    }
 // );
 
-Route::get(
-    '/databind',
-    function() {
-        $fruits = ['레몬', '딸기', '자몽', '수박'];
+// Route::get(
+//     '/databind',
+//     function() {
+//         $fruits = ['레몬', '딸기', '자몽', '수박'];
 
-        // return view('welcome2')->with('name', 'Foo');
-        return view('welcome2', [
-            'name' => 'Foo',
-            'greeting' => '안녕~', 
-            'items' => $fruits,
-        ]);
-    }
-);
+//         // return view('welcome2')->with('name', 'Foo');
+//         return view('welcome2', [
+//             'name' => 'Foo',
+//             'greeting' => '안녕~', 
+//             'items' => $fruits,
+//         ]);
+//     }
+// );
 
 
-Route::get('/inherit', function() {
-    return view('welcome3');
-});
+// Route::get('/inherit', function() {
+//     return view('welcome3');
+// });
+
+Route::get('/', 'WelcomeController@index');
+
+Route::resource('articles', 'ArticlesController');
+
+
