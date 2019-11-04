@@ -80,10 +80,18 @@ Route::get(
 Route::get(
     '/databind',
     function() {
+        $fruits = ['레몬', '딸기', '자몽', '수박'];
+
         // return view('welcome2')->with('name', 'Foo');
         return view('welcome2', [
             'name' => 'Foo',
             'greeting' => '안녕~', 
+            'items' => $fruits,
         ]);
     }
 );
+
+
+Route::get('/inherit', function() {
+    return view('welcome3');
+});
