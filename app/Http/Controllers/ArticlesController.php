@@ -13,7 +13,18 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        return __METHOD__ . '은(는) Article 컬렉션을 조회합니다.';
+        // $articles = \App\Article::get();
+        // 즉시 로드
+        // $articles = \App\Article::with('user')->get();
+        // 지연 로드
+        // $articles->load('user');
+        // $articles = \App\Article::get();
+        // paginate(인수)에 의해 페이지 당 인수 만큼 글이 나오며, ?page=페이지수 로 내용 확인 가능
+        $articles = \App\Article::with('user')->latest()->paginate(3);
+
+        // 아래의 compact는 https://www.php.net/manual/en/function.compact.php 참조
+        return view('articles.index', compact('articles'));
+        // return __METHOD__ . '은(는) Article 컬렉션을 조회합니다.';
     }
 
     /**
