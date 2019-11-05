@@ -37,6 +37,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $dates = [
+        'last_login',
+    ];
+
     public function articles() {
         return $this->hasMany(Article::class);
         // 나(User)는 많은 Article을 갖는다

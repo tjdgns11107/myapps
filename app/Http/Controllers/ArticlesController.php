@@ -92,6 +92,13 @@ class ArticlesController extends Controller
             return back()->wtih('flash_message', '글 작성 실패')->wtihInput();
         }
 
+        // var_dump('이벤트를 던집니다.');
+        //article의 created이벤트가 발생하면 article를 던져줌
+        // event('article.created', [$article]);
+        // event(new \App\Events\ArticleCreated($article));
+        // var_dump('이벤트를 던졌습니다.');
+        event(new \App\Events\ArticlesEvent($article));
+
         return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
     }
 
