@@ -22,6 +22,10 @@ class ArticlesController extends Controller
         // $articles = \App\Article::get();
         // paginate(인수)에 의해 페이지 당 인수 만큼 글이 나오며, ?page=페이지수 로 내용 확인 가능
         $articles = \App\Article::with('user')->latest()->paginate(3);
+        // 뷰를 디버깅 할 때 사용
+        // 뷰 파일에서 {{ dd('reached') }} 와 같이 사용하면
+        // 그 부분을 기점으로 위 혹은 아래 중 어디에서 에러가 발생하는지 확인 가능
+        // dd(view('articles.index', compact('articles'))->render());
 
         // 아래의 compact는 https://www.php.net/manual/en/function.compact.php 참조
         return view('articles.index', compact('articles'));
@@ -110,7 +114,14 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 조회합니다.' . $id;
+        // echo $foo;
+
+        $article = \App\Article::findOrFail($id);
+        // 도우미 함수로, 받은 값을 덤프하고 실행을 멈춤
+        dd($article);
+
+        // return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 조회합니다.' . $id;
+        return $article->toArray();
     }
 
     /**
