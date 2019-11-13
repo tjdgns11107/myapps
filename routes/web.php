@@ -151,3 +151,30 @@ Route::get('/home', 'HomeController@index')->name('home');
 //    var_dump('이벤트를 받았습니다. 받은 데이터(상태)는 다음과 같습니다.');
 //    var_dump($article->toArray());
 // });
+
+Route::get('mail', function() {
+    $article = App\Article::with('user')->find(1);
+
+    // Mail 파사드의 send() : 메일 보내기, Mail::request()
+    return Mail::send(
+        'emails.articles.created',          // 인수 1: 메일 내용의 뷰파일
+        compact('article'),                 // 인수2 : 뷰에 전달할 데이터
+        // use ()
+        // inner function 에서 outer function 의 변수를 사용할 수 있다.
+        // ( 자바스크립트는 그냥 사용, php 는 명시적으로 선언 해 줘야함.)    
+        function ($message) use($article) {
+            // 보내는 사람
+            $message->from('admin@g.yju.ac.kr');
+            // 받는 사람
+            $message->to(['tjdgns11107@g.yju.ac.kr']);
+            // 이메일 참고 할 사람(참조)
+            $message->cc('tjdgns11107@g.yju.ac.kr');
+            // 숨은 참고를 할 사람
+            // $message->bcc();
+            // 첨부 파일 사용
+            // storage_path() : storages 폴더 내의 파일의 절대 경로를 반환하는 헬퍼 함수
+            // $message->attach(storage_path('ElePHPant.png'));
+            $message->subject('새 글이 등록되었습니다. -' . $article->title);
+        }
+    );
+});
